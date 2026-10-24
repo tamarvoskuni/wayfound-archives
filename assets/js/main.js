@@ -79,7 +79,7 @@
     // Sun sinks behind the trees.
     const sunT = ramp(p, 0, 0.5);
     const sunY = lerp(vh * 0.04, vh * 0.86, sunT);
-    sun.style.transform = `translate(${lerp(10, 30, sunT)}vw, ${sunY}px)`;
+    sun.style.transform = `translate(${lerp(20, 34, sunT)}vw, ${sunY}px)`;
     sun.style.opacity = (1 - ramp(p, 0.42, 0.52)).toFixed(3);
 
     // Moon rises once the sun is gone.
@@ -91,12 +91,12 @@
     const night = ramp(p, 0.36, 0.7);
     s.setProperty("--night", night.toFixed(3));
     s.setProperty("--stars", ramp(p, 0.5, 0.72).toFixed(3));
-    s.setProperty("--back-b", lerp(1.15, 0.32, night).toFixed(3));
-    s.setProperty("--front-b", lerp(1, 0.12, night).toFixed(3));
+    s.setProperty("--sil-back", (0.9 * ramp(p, 0.26, 0.5)).toFixed(3));
+    s.setProperty("--sil-front", ramp(p, 0.3, 0.46).toFixed(3));
     s.setProperty("--hint", (1 - ramp(p, 0.01, 0.06)).toFixed(3));
 
     // Caption ink flips from dark-on-gold to bone-on-night.
-    const light = ramp(p, 0.4, 0.5);
+    const light = ramp(p, 0.33, 0.37);
     s.setProperty("--cap-color", mix("#14110d", "#ece2cb", light));
     s.setProperty("--cap-shadow", light > 0.5 ? "rgba(11,15,12,.9)" : "rgba(243,226,184,.8)");
     s.setProperty("--cap-accent", mix("#8a3a1c", "#d9a35a", light));
