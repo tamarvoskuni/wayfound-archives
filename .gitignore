@@ -1,0 +1,4 @@
+# The unsealed archive must never reach the public repo.
+private/
+.venv/
+.DS_Store

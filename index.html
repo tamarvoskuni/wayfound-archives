@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Wayfound Archives</title>
+  <meta name="description" content="Beneath the forest, something was never destroyed. Only hidden. A companion to Witch & Hunter by Tamar Voskuni.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#14110d">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preload" href="assets/img/sun.jpg" as="image">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <main>
+    <!-- The descent: a tall track; the stage inside it stays pinned while you scroll. -->
+    <section class="journey" id="journey" aria-label="Dusk over the forest">
+      <div class="stage">
+        <div class="sky" aria-hidden="true"></div>
+        <div class="stars" aria-hidden="true"></div>
+
+        <div class="orb sun" aria-hidden="true"><img src="assets/img/sun.jpg" alt=""></div>
+        <div class="orb moon" aria-hidden="true"><img src="assets/img/moon.jpg" alt=""></div>
+
+        <div class="trees trees--back" aria-hidden="true"></div>
+        <div class="trees trees--front" aria-hidden="true"></div>
+        <div class="vignette" aria-hidden="true"></div>
+
+        <!-- Captions: data-in / data-out are scroll positions from 0 (top) to 1 (the wall). -->
+        <div class="captions">
+          <header class="caption caption--title" data-in="-1" data-out="0.12">
+            <p class="kicker">Witch &amp; Hunter</p>
+            <h1>Some things are outlawed.<br><em>Some are only hidden.</em></h1>
+          </header>
+          <p class="caption" data-in="0.17" data-out="0.31">Magic is a crime.<br>Willow committed it anyway.</p>
+          <p class="caption" data-in="0.37" data-out="0.52">Her parole officer is coming for her.<br><em>He hunts best after dark.</em></p>
+          <p class="caption" data-in="0.58" data-out="0.74">Beneath the forest lies a market that doesn&rsquo;t exist,<br>selling things that shouldn&rsquo;t.</p>
+        </div>
+
+        <div class="scroll-hint" aria-hidden="true">
+          <span>Descend</span>
+          <svg viewBox="0 0 24 40" width="18" height="30"><path d="M12 2v34M4 28l8 8 8-8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+
+        <!-- The wall rises to meet you at the end of the descent. -->
+        <div class="wall" id="wall">
+          <div class="passage" aria-hidden="true"><div class="passage__glow"></div></div>
+          <div class="wall__half wall__half--l" aria-hidden="true"></div>
+          <div class="wall__half wall__half--r" aria-hidden="true"></div>
+          <div class="lamp" aria-hidden="true"></div>
+
+          <div class="plaque">
+            <p class="plaque__over">Beyond this wall</p>
+            <h2 class="plaque__name">The Wayfound Archives</h2>
+            <p class="plaque__motto">For those who lost their way, and found it.</p>
+
+            <form class="seal" id="seal" autocomplete="off">
+              <label for="word" class="seal__label">Speak the word</label>
+              <div class="seal__row">
+                <input id="word" name="word" type="password" spellcheck="false" autocapitalize="off" placeholder="&middot; &middot; &middot;" required>
+                <button type="submit">Enter</button>
+              </div>
+              <p class="seal__msg" id="seal-msg" role="status" aria-live="polite"></p>
+            </form>
+
+            <div class="remembered" id="remembered" hidden>
+              <p class="seal__label">The wall remembers you.</p>
+              <button type="button" id="enter-again">Enter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filled in only after the password unlocks it. -->
+    <section class="archive" id="archive" hidden aria-label="The Wayfound Archives"></section>
+  </main>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

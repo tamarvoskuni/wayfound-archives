@@ -1,0 +1,301 @@
+/* ---------- Palette: earthy fall, ink & umber ---------- */
+:root {
+  --ink: #14110d;
+  --umber: #3b2a1d;
+  --bark: #5a4130;
+  --moss: #3d4a2f;
+  --fern: #6b7550;
+  --ochre: #b9853a;
+  --ember: #a8532a;
+  --bone: #ece2cb;
+  --bone-dim: #b9ad93;
+
+  --serif: "IM Fell English", "Iowan Old Style", Georgia, serif;
+  --caps: "IM Fell English SC", "IM Fell English", Georgia, serif;
+
+  /* Updated every frame by main.js */
+  --p: 0;
+  --night: 0;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--ink); }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--serif);
+  font-size: clamp(17px, 1.1vw + 12px, 22px);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+
+/* Paper grain over everything, so the whole page reads as printed. */
+.grain {
+  position: fixed; inset: 0; z-index: 50; pointer-events: none;
+  opacity: .16; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .4  0 0 0 0 .3  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- The descent ---------- */
+.journey { position: relative; height: 640vh; }
+.stage {
+  position: sticky; top: 0;
+  height: 100vh; height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, var(--sky-top, #d9b56e), var(--sky-bottom, #f3e2b8) 78%);
+}
+
+.stars { position: absolute; inset: 0 0 30% 0; opacity: var(--stars, 0); }
+.star {
+  position: absolute; border-radius: 50%;
+  background: var(--bone);
+  box-shadow: 0 0 6px rgba(236, 226, 203, .7);
+  animation: twinkle var(--tw, 4s) ease-in-out infinite alternate;
+}
+.star--big {
+  background: none; box-shadow: none; border-radius: 0;
+  color: var(--bone); font-size: var(--s, 12px); line-height: 1;
+  text-shadow: 0 0 8px rgba(236, 226, 203, .6);
+}
+.star--big::before { content: "\2726"; }
+@keyframes twinkle { from { opacity: .35; } to { opacity: 1; } }
+
+/* Sun & moon: the engraving is multiplied onto a tinted disc, so the paper takes the sky's light. */
+.orb {
+  position: absolute; left: 50%; top: 0;
+  width: min(34vmin, 320px); aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  isolation: isolate;
+  will-change: transform, opacity;
+}
+.orb img {
+  width: 100%; height: 100%; object-fit: cover;
+  mix-blend-mode: multiply;
+  filter: grayscale(1) contrast(1.25) brightness(1.08);
+}
+.sun {
+  background: radial-gradient(circle, var(--sun-core, #f7d98a) 30%, var(--sun-edge, #e2a54a) 72%);
+  box-shadow: 0 0 80px 20px var(--sun-glow, rgba(247, 205, 120, .55)), 0 0 220px 80px var(--sun-haze, rgba(240, 190, 110, .25));
+}
+.sun img { clip-path: circle(47.5% at 50% 50%); }
+.moon {
+  width: min(30vmin, 270px);
+  background: radial-gradient(circle, #f3ecd8 40%, #d7cbaa 75%);
+  box-shadow: 0 0 60px 10px rgba(236, 226, 203, .28), 0 0 200px 70px rgba(180, 190, 160, .12);
+  opacity: 0;
+}
+.moon img { clip-path: circle(48% at 50% 50.5%); filter: grayscale(1) contrast(1.1) brightness(1.12); }
+
+/* Treeline: a horizontally repeating engraving, darkening into silhouette as night falls. */
+.trees {
+  position: absolute; left: -5%; right: -5%; bottom: 0;
+  background-image: var(--trees-img, none);
+  background-repeat: repeat-x;
+  background-position: bottom center;
+  mix-blend-mode: multiply;
+  will-change: transform, filter;
+}
+.trees--back {
+  height: 52%;
+  background-size: auto 100%;
+  filter: grayscale(1) contrast(1.1) brightness(var(--back-b, 1.15)) opacity(.7);
+}
+.trees--front {
+  height: 40%;
+  background-size: auto 100%;
+  background-position: bottom left 37%;
+  filter: grayscale(1) contrast(1.3) brightness(var(--front-b, 1));
+}
+
+.vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(20, 17, 13, .55) 100%);
+}
+
+/* ---------- Captions ---------- */
+.captions {
+  position: absolute; inset: 0; z-index: 5;
+  display: grid; place-items: center;
+  pointer-events: none;
+  padding: 0 16px;
+}
+.caption {
+  grid-area: 1 / 1;
+  margin: 0; max-width: 34ch;
+  text-align: center;
+  font-size: clamp(22px, 2.6vw + 10px, 42px);
+  line-height: 1.25;
+  color: var(--cap-color, var(--ink));
+  text-shadow: 0 0 24px var(--cap-shadow, rgba(243, 226, 184, .8));
+  opacity: 0;
+  translate: 0 calc((1 - var(--o, 0)) * 14px);
+  transform: translateY(4vh);
+}
+.caption em { font-style: italic; color: var(--cap-accent, var(--ember)); }
+.caption--title { max-width: 22ch; }
+.caption--title h1 {
+  margin: 0; font-weight: 400;
+  font-size: clamp(30px, 4.4vw + 10px, 68px);
+  line-height: 1.1;
+}
+.kicker {
+  margin: 0 0 .9em;
+  font-family: var(--caps);
+  font-size: clamp(13px, .5vw + 11px, 17px);
+  letter-spacing: .32em;
+  color: var(--umber);
+}
+
+.scroll-hint {
+  position: absolute; left: 50%; bottom: 5vh; z-index: 6;
+  translate: -50% 0;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  font-family: var(--caps); font-size: 14px; letter-spacing: .3em;
+  color: var(--bone);
+  text-shadow: 0 1px 6px rgba(20, 17, 13, .8);
+  opacity: var(--hint, 1);
+}
+.scroll-hint svg { animation: bob 2.4s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(6px); } }
+
+/* ---------- The wall ---------- */
+.wall {
+  position: absolute; inset: 0; z-index: 10;
+  transform: translateY(calc(var(--wall, 0) * 100%));
+  will-change: transform;
+}
+.wall__half {
+  position: absolute; inset: 0;
+  background-color: var(--umber);
+  background-image:
+    radial-gradient(ellipse 60% 55% at 50% 42%, rgba(232, 170, 90, .28), transparent 70%),
+    linear-gradient(rgba(20, 17, 13, .35), rgba(20, 17, 13, .6)),
+    var(--wall-img, none);
+  background-size: cover, cover, var(--wall-size, cover);
+  background-position: center;
+  background-blend-mode: normal, multiply, normal;
+  transition: transform 1.6s cubic-bezier(.7, 0, .2, 1);
+}
+.wall__half--l { clip-path: inset(0 50% 0 0); }
+.wall__half--r { clip-path: inset(0 0 0 50%); }
+/* Top edge of the wall: a soft shadow so it reads as rising out of the earth. */
+.wall::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -60px; height: 60px; z-index: 1;
+  background: linear-gradient(to bottom, transparent, rgba(20, 17, 13, .85));
+  pointer-events: none;
+}
+
+.passage {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 30% 60% at 50% 70%, #6a4426 0%, #24180f 45%, #0c0907 100%);
+}
+.passage__glow {
+  position: absolute; left: 50%; bottom: 0; width: 60vmin; height: 60vmin;
+  translate: -50% 40%;
+  background: radial-gradient(circle, rgba(240, 180, 100, .55), transparent 65%);
+  filter: blur(10px);
+}
+
+.lamp {
+  position: absolute; left: 50%; top: 42%; width: 120vmin; height: 120vmin;
+  translate: -50% -50%;
+  background: radial-gradient(circle, rgba(232, 170, 90, .16), transparent 60%);
+  animation: flicker 5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes flicker { 0%, 100% { opacity: 1; } 40% { opacity: .82; } 45% { opacity: .95; } 70% { opacity: .88; } }
+
+.plaque {
+  position: absolute; left: 50%; top: 50%;
+  translate: -50% -50%;
+  width: min(560px, calc(100% - 32px));
+  padding: clamp(28px, 5vw, 48px) clamp(20px, 5vw, 48px);
+  text-align: center;
+  color: var(--bone);
+  background:
+    linear-gradient(rgba(20, 17, 13, .78), rgba(20, 17, 13, .86));
+  border: 1px solid rgba(185, 133, 58, .45);
+  outline: 1px solid rgba(185, 133, 58, .2);
+  outline-offset: 6px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+  transition: opacity .7s ease, translate .7s ease;
+}
+.plaque__over {
+  margin: 0; font-family: var(--caps); letter-spacing: .4em; font-size: 14px; color: var(--ochre);
+}
+.plaque__name {
+  margin: .25em 0 .3em; font-family: var(--caps); font-weight: 400;
+  font-size: clamp(30px, 3.6vw + 12px, 52px); line-height: 1.05; letter-spacing: .04em;
+}
+.plaque__motto { margin: 0 0 1.8em; font-style: italic; color: var(--bone-dim); }
+
+.seal__label {
+  display: block; margin: 0 0 .7em;
+  font-family: var(--caps); letter-spacing: .28em; font-size: 14px; color: var(--ochre);
+}
+.seal__row { display: flex; gap: 10px; justify-content: center; }
+.seal input {
+  flex: 1; min-width: 0; max-width: 300px;
+  padding: .55em .8em;
+  font: inherit; font-size: 20px; letter-spacing: .15em; text-align: center;
+  color: var(--bone);
+  background: rgba(236, 226, 203, .05);
+  border: 0; border-bottom: 1px solid var(--ochre);
+  border-radius: 0;
+}
+.seal input::placeholder { color: rgba(236, 226, 203, .35); }
+.seal input:focus { outline: none; background: rgba(236, 226, 203, .09); border-bottom-color: var(--bone); }
+.plaque button {
+  padding: .55em 1.2em;
+  font-family: var(--caps); font-size: 16px; letter-spacing: .2em;
+  color: var(--ink); background: var(--ochre);
+  border: 0; border-radius: 0; cursor: pointer;
+  transition: background .2s;
+}
+.plaque button:hover, .plaque button:focus-visible { background: var(--bone); outline: none; }
+.plaque button[disabled] { opacity: .6; cursor: progress; }
+.seal__msg { min-height: 1.5em; margin: 1em 0 0; font-style: italic; color: var(--bone-dim); }
+
+.wall.is-wrong .plaque { animation: shake .5s; }
+@keyframes shake {
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+/* Opened: the plaque fades, the wall parts down the middle. */
+.wall.is-open .plaque { opacity: 0; translate: -50% -46%; pointer-events: none; }
+.wall.is-open .lamp { opacity: 0; }
+.wall.is-open .wall__half--l { transform: translateX(-52%); transition-delay: .5s; }
+.wall.is-open .wall__half--r { transform: translateX(52%); transition-delay: .5s; }
+
+/* ---------- The archive (unlocked) ---------- */
+.archive {
+  position: relative;
+  min-height: 100vh;
+  padding: 18vh 16px 20vh;
+  background: radial-gradient(ellipse at 50% 0%, #3a2616, var(--ink) 70%);
+  text-align: center;
+}
+.archive-intro { max-width: 36ch; margin: 0 auto; }
+.archive-kicker { font-family: var(--caps); letter-spacing: .3em; color: var(--ochre); font-size: 15px; }
+.archive h2 { font-family: var(--caps); font-weight: 400; font-size: clamp(34px, 4vw + 14px, 64px); line-height: 1.05; margin: .2em 0 .5em; }
+.archive-soon { font-style: italic; color: var(--bone-dim); }
+
+/* ?at= preview: pin the stage so a still screenshot shows the frozen scene. */
+.is-preview .stage { position: fixed; inset: 0; }
+
+/* ---------- Comfort settings ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .star, .scroll-hint svg, .lamp { animation: none; }
+  .wall__half, .plaque { transition-duration: .01s; transition-delay: 0s !important; }
+  .wall.is-wrong .plaque { animation: none; }
+}
